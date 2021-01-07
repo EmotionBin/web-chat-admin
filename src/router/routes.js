@@ -11,8 +11,8 @@ const routes = [
     component: () => import('../views/login/index.vue')
   },
   {
-    path: '/home',
-    name: 'home',
+    path: '/',
+    name: 'index',
     meta,
     // redirect: { name: 'index' },
     component: () => import('../views/home/index.vue')

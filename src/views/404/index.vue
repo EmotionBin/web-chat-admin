@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .page-wrap {
   background: #303133;
   background-blend-mode: multiply,multiply;

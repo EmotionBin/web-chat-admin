@@ -104,7 +104,7 @@ export default {
       // vuex 写入用户信息
       this.updateUser(data.userInfo)
       // 登录成功进行重定向 若没有重定向参数 默认进入首页
-      this.$router.replace(this.$route.query.redirect || '/home')
+      this.$router.replace(this.$route.query.redirect || '/')
     },
     // 点击 邮箱登录 快速注册
     showTips () {

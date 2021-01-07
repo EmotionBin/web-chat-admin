@@ -1,18 +1,39 @@
 <template>
   <div class="home-wrap">
-    主页
+    <div class="home-head">
+      <Head/>
+    </div>
+    <div class="home-body">
+      <div class="body-menu">
+        <Menu/>
+      </div>
+      <div class="body-content">
+        <div class="content-head">
+          ssss
+        </div>
+        <div class="content-view-wrap">
+          <div class="content-view">
+            <router-view/>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import Head from './components/head/index.vue'
+import Menu from '@/components/menu/index.vue'
 
 export default {
-  name: 'home',
+  name: 'homeIndex',
   data () {
     return {
     }
   },
   components: {
+    Head,
+    Menu
   },
   computed: {
   },
@@ -28,7 +49,54 @@ export default {
 </script>
 
 <style lang="scss">
-.home-wrap{
+$viewHeadHeight:40px;
 
+.home-wrap{
+  height: 100%;
+  .home-body{
+    position: relative;
+    height: calc(100% - #{$navHeight});
+    background-color: #eaecee;
+    overflow: hidden;
+    .body-menu{
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: $menuWidth;
+      height: 100%;
+      background: linear-gradient(#547091,#696d7a);
+      cursor: pointer;
+      overflow: hidden;
+      z-index: 2020;
+      &:hover{
+        width: $menuHoverWidth;
+      }
+    }
+    .body-content{
+      width: 100%;
+      height: 100%;
+      padding-left: $menuWidth;
+      @include commonBoxShadow;
+    }
+    .content-head{
+      height: $viewHeadHeight;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding-left: 20px;
+      background-color: #fff;
+      color: #606266;
+      @include commonBoxShadow(#999);
+    }
+    .content-view-wrap{
+      height: calc(100% - #{$viewHeadHeight});
+      padding: 20px;
+    }
+    .content-view{
+      height: 100%;
+      background-color: #fff;
+      @include commonBoxShadow;
+    }
+  }
 }
 </style>
