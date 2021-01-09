@@ -1,29 +1,39 @@
-export default (() => {
-  return [
-    {
-      title: '聊天',
-      path: '/home/chat/index',
-      icon: 'el-icon-chat-dot-round'
-    },
-    {
-      title: '通讯录',
-      path: '/home/book',
-      icon: 'el-icon-notebook-2'
-    },
-    {
-      title: '个人信息',
-      path: '/home/my',
-      icon: 'el-icon-user'
-    },
-    {
-      title: '搜索',
-      path: '/home/search',
-      icon: 'el-icon-search'
-    },
-    {
-      title: '关于',
-      path: '/home/about',
-      icon: 'el-icon-wind-power'
-    }
-  ]
-})()
+export default [
+  {
+    title: '数据统计',
+    alias: 'dataAccount',
+    icon: '',
+    show: true,
+    subMenu: [
+      {
+        title: '数据概览',
+        alias: 'statisticsOverview',
+        icon: '',
+        path: '/statistics/overview',
+        show: true
+      },
+      {
+        title: '数据分析',
+        alias: 'statisticsAnalysis',
+        icon: '',
+        path: '/statistics/analysis',
+        show: true
+      }
+    ]
+  },
+  {
+    title: '用户行为',
+    alias: 'userAction',
+    icon: '',
+    show: true,
+    subMenu: [
+      {
+        title: '用户操作',
+        alias: 'userOperation',
+        icon: '',
+        path: '/user/operation',
+        show: true
+      }
+    ]
+  }
+]

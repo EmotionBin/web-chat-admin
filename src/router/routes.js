@@ -1,4 +1,4 @@
-// import menuRouter from './modules/menu'
+import menuRouter from './modules/menu'
 
 const meta = {
   auth: true
@@ -14,17 +14,11 @@ const routes = [
     path: '/',
     name: 'index',
     meta,
-    // redirect: { name: 'index' },
-    component: () => import('../views/home/index.vue')
-    // children: [
-    //   ...menuRouter,
-    //   {
-    //     path: 'user/:userId',
-    //     name: 'user',
-    //     meta,
-    //     component: () => import('@/components/user/index.vue')
-    //   }
-    // ]
+    redirect: { name: 'statisticsOverview' },
+    component: () => import('../views/home/index.vue'),
+    children: [
+      ...menuRouter
+    ]
   },
   {
     path: '/redirect/:route',

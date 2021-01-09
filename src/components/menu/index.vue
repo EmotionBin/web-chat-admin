@@ -1,6 +1,6 @@
 <template>
   <div class="menu-wrap">
-    <el-menu text-color="#fff" active-text-color="#fff" unique-opened :default-active="activeMenu" @select="handleSelectItem">
+    <el-menu text-color="#fff" active-text-color="#fff" unique-opened :default-active="getCurrentRoute" @select="handleSelectItem">
       <template v-for="item in menuList">
         <el-submenu v-if="item.subMenu" :index="item.alias" :key="item.alias">
           <template slot="title">
@@ -21,42 +21,21 @@
 </template>
 
 <script>
+import menuList from '@/data/menu/index.js'
+import { mapMutations } from 'vuex'
+
 export default {
   name: 'menuIndex',
   data () {
     return {
-      activeMenu: 'projectSituation',
-      menuList: [
-        {
-          title: '监控中心',
-          alias: 'monitoringCenter',
-          icon: '',
-          show: true,
-          subMenu: [
-            {
-              title: '项目管理',
-              alias: 'projectManagement',
-              icon: '',
-              path: '/monitoringCenter/projectManagement',
-              show: true
-            },
-            {
-              title: '项目运行情况',
-              alias: 'projectSituation',
-              icon: '',
-              path: '/monitoringCenter/projectSituation',
-              show: true
-            }
-          ]
-        }
-      ]
+      menuList
     }
   },
   components: {
   },
   computed: {
     getCurrentRoute () {
-      return 1
+      return this.$route.path
     }
   },
   watch: {
@@ -69,29 +48,31 @@ export default {
   beforeDestroy () {
   },
   methods: {
+    ...mapMutations('menu', [
+      'updateActiveMenu'
+    ]),
     // 初始化 设置参数
     init () {
-      const { activeMenu, menuList } = this
-      const currentActiveMenu = []
-      for (let i = 0; i < menuList.length; i++) {
-        const item = menuList[i]
-        const index1 = item.subMenu.findIndex(item1 => item1.alias === activeMenu)
-        if (index1 !== -1) {
-          currentActiveMenu.push(item.title, item.subMenu[index1].title)
-          break
-        }
-      }
-      // this.$store.commit('updateActiveMenu', currentActiveMenu)
     },
     // 点击菜单选项
-    handleSelectItem (key, keyPath) {
-      console.log('key, keyPath: ', key, keyPath)
-      this.$router.push(key)
-      // if (this.getCurrentRoute === path) {
-      //   return
-      // }
-      // this.$store.commit('updateActiveMenu', [parentTitle, title])
-      // this.$router.push(path)
+    handleSelectItem (path, fullPath) {
+      const { getCurrentRoute, getPathTitle, $router, updateActiveMenu } = this
+      if (getCurrentRoute === path) {
+        return
+      }
+      $router.push(path)
+      const menuTitle = getPathTitle(path)
+      updateActiveMenu({ title: menuTitle, path })
+    },
+    // 获取路由标题
+    getPathTitle (path) {
+      const { menuList } = this
+      for (const item of menuList) {
+        const index = item.subMenu.findIndex(v => v.path === path)
+        if (index > -1) {
+          return item.subMenu[index].title
+        }
+      }
     }
   }
 }

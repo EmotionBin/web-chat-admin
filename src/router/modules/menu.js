@@ -6,45 +6,21 @@ const meta = {
 
 export default [
   {
-    path: 'chat/index',
-    name: 'chat-index',
+    path: 'statistics/overview',
+    name: 'statisticsOverview',
     meta,
-    component: () => import('@/views/menu/chat/index.vue')
+    component: () => import('@/views/menu/statistics/overview/index.vue')
   },
   {
-    path: 'chat/view/:roomId',
-    name: 'chat-view',
+    path: 'statistics/analysis',
+    name: 'statisticsAnalysis',
     meta,
-    component: () => import('@/components/chat/view/index.vue')
+    component: () => import('@/views/menu/statistics/analysis/index.vue')
   },
   {
-    path: 'chat/detail/:roomId',
-    name: 'chat-detail',
+    path: 'user/operation',
+    name: 'userOperation',
     meta,
-    component: () => import('@/components/chat/detail/index.vue')
-  },
-  {
-    path: 'book',
-    name: 'book',
-    meta,
-    component: () => import('@/views/menu/book/index.vue')
-  },
-  {
-    path: 'my',
-    name: 'my',
-    meta,
-    component: () => import('@/views/menu/my/index.vue')
-  },
-  {
-    path: 'search',
-    name: 'search',
-    meta,
-    component: () => import('@/views/menu/search/index.vue')
-  },
-  {
-    path: 'about',
-    name: 'about',
-    meta,
-    component: () => import('@/views/menu/about/index.vue')
+    component: () => import('@/views/menu/user/operation/index.vue')
   }
 ]
