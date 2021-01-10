@@ -9,7 +9,7 @@
       </div>
       <div class="body-content">
         <div class="content-head">
-          ssss
+          {{ getCurrentTitle }}
         </div>
         <div class="content-view-wrap">
           <div class="content-view">
@@ -24,6 +24,7 @@
 <script>
 import Head from './components/head/index.vue'
 import Menu from '@/components/menu/index.vue'
+import menuList from '@/data/menu/index.js'
 
 export default {
   name: 'homeIndex',
@@ -36,6 +37,20 @@ export default {
     Menu
   },
   computed: {
+    getCurrentRoute () {
+      return this.$route.path
+    },
+    getCurrentTitle () {
+      for (const item of menuList) {
+        const { title } = item
+        const index = item.subMenu.findIndex(v => v.path === this.getCurrentRoute)
+        if (index > -1) {
+          const subTitle = item.subMenu[index].title
+          return `${title} | ${subTitle}`
+        }
+      }
+      return ''
+    }
   },
   created () {
   },
@@ -76,7 +91,7 @@ $viewHeadHeight:40px;
       width: 100%;
       height: 100%;
       padding-left: $menuWidth;
-      @include commonBoxShadow;
+      @include common-box-shadow;
     }
     .content-head{
       height: $viewHeadHeight;
@@ -86,7 +101,7 @@ $viewHeadHeight:40px;
       padding-left: 20px;
       background-color: #fff;
       color: #606266;
-      @include commonBoxShadow(#999);
+      @include common-box-shadow(#999);
     }
     .content-view-wrap{
       height: calc(100% - #{$viewHeadHeight});
@@ -95,7 +110,7 @@ $viewHeadHeight:40px;
     .content-view{
       height: 100%;
       background-color: #fff;
-      @include commonBoxShadow;
+      @include common-box-shadow;
     }
   }
 }
