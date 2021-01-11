@@ -12,7 +12,7 @@
         <div class="head-area-wrap" :key="item.title">
           <div class="head-area-content">
             <div class="area-title">{{ item.title }}</div>
-            <div class="area-value">{{ item.value }}</div>
+            <div :class="['area-value', item.name]">{{ item.value }}</div>
           </div>
         </div>
       </template>
@@ -38,22 +38,26 @@ export default {
       headAccountData: [
         {
           title: '最近三十天访问人数',
+          name: 'lastThirty',
           tips: '',
           value: 30
         },
         {
           title: '昨日访问人数',
+          name: 'yesterday',
           tips: '',
           value: 30
         },
         {
           title: '总活跃度',
           tips: '用户每进行一次操作活跃度加一',
+          name: 'sumActivity',
           value: 30
         },
         {
           title: '昨日活跃度',
           tips: '用户每进行一次操作活跃度加一',
+          name: 'yesterdayActivity',
           value: 30
         }
       ],
@@ -116,6 +120,10 @@ export default {
       const chartPeopleNumberOption = {
         title: {
           text: '最近一周访问人数',
+          textStyle: {
+            color: '#666',
+            fontWeight: 'normal'
+          },
           x: 'center'
         },
         tooltip: {
@@ -163,6 +171,10 @@ export default {
       const chartActivityLevelOption = {
         title: {
           text: '最近一周活跃度',
+          textStyle: {
+            color: '#666',
+            fontWeight: 'normal'
+          },
           x: 'center'
         },
         color: ['#3398DB'],
@@ -233,10 +245,25 @@ export default {
       @include flex-center;
       flex-direction: column;
       font-size: 30px;
-      border: 1px solid #d1d1d1;
+      color: #999;
+      border: 1px solid #e9e9e9;
       box-shadow: 0 0 4px #d1d1d1;
       .area-title{
         margin-bottom: 20px;
+      }
+      .area-value{
+        &.lastThirty{
+          color: rgb(56, 157, 247);
+        }
+        &.yesterday{
+          color: rgb(60, 217, 158);
+        }
+        &.sumActivity{
+          color: rgb(250, 199, 79);
+        }
+        &.yesterdayActivity{
+          color: rgb(254, 142, 88);
+        }
       }
     }
   }
