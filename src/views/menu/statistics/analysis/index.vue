@@ -3,23 +3,34 @@
     <!-- 1.登录方式 微信登录与普通登录 饼图
     2.用户使用时间段 饼图 0:00-8:00 8:00-12:00 12:00-18:00 18:00-0:00
     数据分析 -->
-    <div class="analysis-chart-wrap">
-      <div class="chart-view" ref="chartLoginWay"></div>
+    <div class="analysis-head">
+      <el-date-picker v-model="date" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
+        :picker-options="pickerOptions" format="yyyy-MM-dd" value-format="timestamp">
+      </el-date-picker>
+      <el-button class="head-btn" type="primary" @click="getData">查询</el-button>
     </div>
-    <div class="analysis-chart-wrap">
-      <div class="chart-view" ref="chartTimeRange"></div>
+    <div class="analysis-body">
+      <div class="analysis-chart-wrap">
+        <div class="chart-view" ref="chartLoginWay"></div>
+      </div>
+      <div class="analysis-chart-wrap">
+        <div class="chart-view" ref="chartTimeRange"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { pickerOptions } from '@/data/views/analysis.js'
 import echarts from 'echarts'
 
 export default {
   name: 'statisticsAnalysis',
   data () {
     return {
-      chart: []
+      chart: [],
+      date: [],
+      pickerOptions
     }
   },
   components: {
@@ -38,6 +49,7 @@ export default {
   methods: {
     // 初始化
     init () {
+      this.date = this.$utils.getTimeRange(-30)
       // 请求数据...
       const data = [
         {
@@ -138,7 +150,7 @@ export default {
             name: '访问来源',
             type: 'pie',
             radius: '55%',
-            center: ['50%', '60%'],
+            center: ['50%', '50%'],
             data,
             emphasis: {
               itemStyle: {
@@ -155,6 +167,10 @@ export default {
         chartTimeRangeOption
       }
       return wrap[`${domRef}Option`]
+    },
+    // 查询数据
+    getData () {
+      console.log('查询', this.date)
     }
   }
 }
@@ -164,13 +180,24 @@ export default {
 .analysis-wrap{
   height: 100%;
   overflow: hidden;
-  display: flex;
-  .analysis-chart-wrap{
-    width: 50%;
-    padding: 20px;
+  .analysis-head{
+    height: 100px;
+    @include flex-center;
+    border-bottom: 1px solid #d1d1d1;
+    .head-btn{
+      margin-left: 20px;
+    }
   }
-  .chart-view{
-    height: 100%;
+  .analysis-body{
+    display: flex;
+    height: calc(100% - 100px);
+    .analysis-chart-wrap{
+      width: 50%;
+      padding: 20px;
+    }
+    .chart-view{
+      height: 100%;
+    }
   }
 }
 </style>

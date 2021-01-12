@@ -22,24 +22,34 @@ utils.open = function (url) {
  * @param {number} wait 防抖时间间隔
  * @param {immediate} immediate 是否马上执行一次
  */
-utils.debounce = function (cb, wait, immediate) {
-  let timer
-  return function () {
-    const args = arguments
-    const context = this
-    if (timer) clearTimeout(timer)
-    if (immediate) {
-      const callNow = !timer
-      timer = setTimeout(() => {
-        timer = null
-      }, wait)
-      if (callNow) return cb.apply(context, args)
-    } else {
-      timer = setTimeout(function () {
-        return cb.apply(context, args)
-      }, wait)
-    }
-  }
+// utils.debounce = function (cb, wait, immediate) {
+//   let timer
+//   return function () {
+//     const args = arguments
+//     const context = this
+//     if (timer) clearTimeout(timer)
+//     if (immediate) {
+//       const callNow = !timer
+//       timer = setTimeout(() => {
+//         timer = null
+//       }, wait)
+//       if (callNow) return cb.apply(context, args)
+//     } else {
+//       timer = setTimeout(function () {
+//         return cb.apply(context, args)
+//       }, wait)
+//     }
+//   }
+// }
+
+/**
+ * 获取时间范围 时间戳 毫秒
+ * @param {number} range 与今天相差的天数
+ */
+utils.getTimeRange = function (range) {
+  const today = +new Date()
+  const date = today + range * 24 * 60 * 60 * 1000
+  return range > 0 ? [today, date] : [date, today]
 }
 
 export default utils

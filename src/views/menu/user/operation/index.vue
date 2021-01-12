@@ -1,32 +1,188 @@
 <template>
-  <div class="">
-    用户操作
+  <div class="operation-wrap">
+    <div class="operation-head">
+      <span class="select-text">用户：</span>
+      <el-select v-model="user" placeholder="请选择用户">
+        <el-option v-for="item in userList" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </el-select>
+      <span class="date-text">时间：</span>
+      <el-date-picker v-model="date" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期"
+        end-placeholder="结束日期" :picker-options="pickerOptions" format="yyyy-MM-dd" value-format="timestamp">
+      </el-date-picker>
+      <el-button type="primary" @click="getData">查询</el-button>
+    </div>
+    <div class="operation-body">
+      <el-table
+        :data="tableData"
+        stripe
+        style="width: 100%">
+        <el-table-column label="序号" type="index" :index="indexMethod" align="center"></el-table-column>
+        <template v-for="item in tableCofig">
+          <el-table-column :label="item.label" :key="item.label" :show-overflow-tooltip="true" align="center">
+            <template slot-scope='scope'>
+              <div class="table-info">
+                <span class="info-text">
+                  <template v-if="item.prop === 'time'">
+                    {{ scope.row[item.prop] }}
+                  </template>
+                  <template v-else>
+                    {{ scope.row[item.prop] }}
+                  </template>
+                </span>
+              </div>
+            </template>
+          </el-table-column>
+        </template>
+      </el-table>
+    </div>
+    <div class="operation-footer">
+      <div class="footer-account">
+        共{{page.total}}条记录&nbsp;&nbsp;  第{{page.number}}/{{getMaxPageNumber}}页
+      </div>
+      <el-pagination background layout="prev, pager, next, slot, jumper" :total="page.total" :page-size="page.size"
+        :current-page.sync="page.number" @current-change="pageChange">
+        <span class="footer-page-count">&nbsp;共{{getMaxPageNumber}}页<span class="footer-divider">|</span></span>
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
+import { pickerOptions } from '@/data/views/analysis.js'
+import { tableCofig } from '@/data/views/operation.js'
+
 export default {
-  name: 'name',
+  name: 'userOperation',
   data () {
     return {
+      user: '',
+      userList: [
+        {
+          label: '小红',
+          value: 1
+        },
+        {
+          label: '小明',
+          value: 2
+        },
+        {
+          label: '小张',
+          value: 3
+        }
+      ],
+      date: [],
+      pickerOptions,
+      tableCofig,
+      tableData: [
+        {
+          username: 1,
+          time: 1645135200,
+          operation: 121,
+          status: 1111
+        },
+        {
+          username: 2,
+          time: 1645135200,
+          operation: 121,
+          status: 1111
+        }
+      ],
+      page: {
+        size: 10,
+        number: 1,
+        total: 100
+      }
     }
   },
   components: {
   },
   computed: {
+    getMaxPageNumber () {
+      return Math.round(this.page.total / this.page.size)
+    }
   },
   watch: {
   },
   created () {
   },
   mounted () {
+    this.init()
   },
   beforeDestroy () {
   },
   methods: {
+    // 初始化
+    init () {
+      // 设置默认时间
+      this.date = this.$utils.getTimeRange(-30)
+      this.getUserList()
+    },
+    // 查询用户列表
+    getUserList () {
+      console.log(1)
+    },
+    // 查询数据
+    getData () {
+      console.log('查询', this.date)
+    },
+    // 自定义表格索引
+    indexMethod (index) {
+      return index + 1
+    },
+    // 翻页
+    pageChange (page) {
+      console.log(page)
+    }
   }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+.operation-wrap{
+  height: 100%;
+  overflow: hidden;
+  .operation-head{
+    height: 100px;
+    @include flex-center;
+    border-bottom: 1px solid #d1d1d1;
+    .select-text,
+    .date-text{
+      color: #666;
+    }
+    .el-select,
+    .el-date-editor{
+      margin-right: 20px;
+    }
+  }
+  .operation-body{
+    height: calc(100% - 200px);
+    padding: 20px;
+    .el-table{
+      .el-table__header .cell{
+        text-overflow: unset !important;
+        white-space: nowrap !important;
+      }
+    }
+  }
+  .operation-footer{
+    position: relative;
+    height: 100px;
+    @include flex-center;
+    .footer-account{
+      position: absolute;
+      left: 30px;
+      font-size: 14px;
+      color: #666;
+    }
+    .footer-page-count{
+      font-weight:normal;
+      color: #666;
+    }
+    .footer-divider{
+      display: inline;
+      margin-left: 20px;
+    }
+  }
+}
 </style>
