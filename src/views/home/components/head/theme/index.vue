@@ -15,12 +15,13 @@
       width="600px"
       :visible.sync="dialogVisible"
       :append-to-body="true">
-      <theme-list style="margin-top: -25px;"/>
+      <theme-list style="margin-top: -25px;" :activeName="theme.activeName"/>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
 import ThemeList from './components/index.vue'
 
 export default {
@@ -34,14 +35,24 @@ export default {
     ThemeList
   },
   computed: {
+    ...mapGetters(['theme'])
   },
   created () {
   },
   mounted () {
+    this.init()
   },
   watch: {
   },
   methods: {
+    ...mapMutations('theme', [
+      'updateActiveTheme'
+    ]),
+    // 初始化 设置主题
+    init () {
+      const activeName = this.theme.activeName || ''
+      this.updateActiveTheme({ activeName })
+    }
   }
 }
 </script>
@@ -50,11 +61,11 @@ export default {
 .theme-wrap{
   margin: 0 10px;
   .el-button{
-    color: #ccc;
+    // color: #ccc;
     padding: 6px;
     font-size: 20px;
     &:hover{
-      color: rgba(255, 255, 255, .9);
+      // color: rgba(255, 255, 255, .9);
       background: #545f6a;
     }
   }

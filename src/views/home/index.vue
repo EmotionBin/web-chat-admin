@@ -79,10 +79,10 @@ $viewHeadHeight:40px;
       top: 0;
       width: $menuWidth;
       height: 100%;
-      background: linear-gradient(#547091,#696d7a);
+      // background: linear-gradient(#547091,#696d7a);
       cursor: pointer;
       overflow: hidden;
-      z-index: 2020;
+      z-index: 2000;
       &:hover{
         width: $menuHoverWidth;
       }
@@ -99,8 +99,8 @@ $viewHeadHeight:40px;
       align-items: center;
       justify-content: flex-start;
       padding-left: 20px;
-      background-color: #fff;
-      color: #606266;
+      // background-color: #fff;
+      // color: #606266;
       @include common-box-shadow(#999);
     }
     .content-view-wrap{
@@ -109,7 +109,7 @@ $viewHeadHeight:40px;
     }
     .content-view{
       height: 100%;
-      background-color: #fff;
+      // background-color: #fff;
       @include common-box-shadow;
     }
   }

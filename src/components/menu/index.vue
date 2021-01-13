@@ -1,6 +1,6 @@
 <template>
   <div class="menu-wrap">
-    <el-menu text-color="#fff" active-text-color="#fff" unique-opened :default-active="getCurrentRoute" @select="handleSelectItem">
+    <el-menu unique-opened :default-active="getCurrentRoute" @select="handleSelectItem">
       <template v-for="item in menuList">
         <el-submenu v-if="item.subMenu" :index="item.alias" :key="item.alias">
           <template slot="title">
@@ -85,6 +85,10 @@ export default {
   .el-menu{
     border-right: 0;
     background: transparent;
+    // .menu-title,
+    // .el-menu-item{
+    //   color: #fff;
+    // }
     .el-submenu__title{
       i::before{
         color: #fff;
@@ -100,11 +104,11 @@ export default {
     }
     .el-submenu__title:hover,
     .el-menu-item:hover{
-      background: #58697c;
+      // background: #58697c;
     }
     .el-menu-item.is-active{
       border-right: 1px solid #fff;
-      background: #6d819a;
+      // background: #6d819a;
     }
   }
   .menu-icon{

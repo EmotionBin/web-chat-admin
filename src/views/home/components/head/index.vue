@@ -81,7 +81,7 @@ export default {
   @include flex-between;
   height: $navHeight;
   padding: 0 30px;
-  background: linear-gradient(90deg,#6081a7,#545e67,#576280);
+  // background: linear-gradient(90deg,#6081a7,#545e67,#576280);
   .head-left{
     display: flex;
     align-items: center;
@@ -91,13 +91,12 @@ export default {
     display: inline-block;
     line-height: 1;
     font-size: 26px;
-    color: #e2ecf6;
+    // color: #e2ecf6;
   }
   .head-right{
     @include flex-center;
-    color: #fff;
     .el-dropdown{
-      color: #fff;
+      // color: #fff;
       cursor: pointer;
     }
   }
@@ -106,12 +105,5 @@ export default {
     color: #c0c7d2;
     @include text-overflow;
   }
-  // .drop-icon{
-  //   position: absolute;
-  //   right: 20px;
-  //   top: 50%;
-  //   transform: translateY(-50%);
-  //   color: #c0c7d2;
-  // }
 }
 </style>

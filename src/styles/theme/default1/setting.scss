@@ -1,2 +1,23 @@
 $theme-name: 'default1';
-$nprogress-bgc: #a20;
+$theme-nprogress-bgc: #a20;
+
+// 导航头部
+$theme-head-bgc: rgb(170, 120, 107);
+// 导航右侧菜单颜色
+$theme-head-setting-color: rgb(214, 26, 26);
+$theme-head-setting-hover-color: rgba(10, 9, 9, 0.9);
+$theme-head-title:#1675d4;
+
+// 左侧菜单
+$theme-menu-bgc: green;
+$theme-menu-title-color: rgb(110, 20, 20);
+$theme-menu-title-hover-color: #1a4679;
+$theme-menu-title-active-color: #c81ece;
+
+// 头部 tabs 页
+$theme-tabs-bgc: rgb(221, 19, 19);
+$theme-tabs-color: #040f25;
+
+// 视图部分
+$theme-view-wrap-bgc: #37628d;
+$theme-view-container: rgb(179, 224, 13);
