@@ -17,7 +17,7 @@
         :data="tableData"
         stripe
         style="width: 100%">
-        <el-table-column label="序号" type="index" :index="indexMethod" align="center"></el-table-column>
+        <el-table-column label="序号" type="index" width="160" :index="indexMethod" align="center"></el-table-column>
         <template v-for="item in tableCofig">
           <el-table-column :label="item.label" :key="item.label" :show-overflow-tooltip="true" align="center">
             <template slot-scope='scope'>
@@ -158,12 +158,12 @@ export default {
   .operation-body{
     height: calc(100% - 200px);
     padding: 20px;
-    .el-table{
-      .el-table__header .cell{
-        text-overflow: unset !important;
-        white-space: nowrap !important;
-      }
-    }
+    // .el-table{
+    //   .el-table__header .cell{
+    //     text-overflow: unset !important;
+    //     white-space: nowrap !important;
+    //   }
+    // }
   }
   .operation-footer{
     position: relative;

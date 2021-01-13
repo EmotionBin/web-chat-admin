@@ -1,38 +1,49 @@
 <template>
   <div class="head-wrap">
     <div class="head-left">
-      <div class="left-img"></div>
-      <span class="left-title">智慧照明云平台</span>
+      <span class="left-title">web-chat-admin</span>
     </div>
     <div class="head-right">
-      <el-dropdown @command="handleCommand">
-        <div class="right-img"></div>
-        <div class="right-username">admin</div>
-        <el-dropdown-menu slot="dropdown" class="app-header-dropdown">
-          <el-dropdown-item command="systemSetting">
-            <span class="drop-img systemSetting" :style="{'background-image': `url(${logo})`}"></span>
-            注销
-          </el-dropdown-item>
+      <head-theme/>
+      <el-dropdown @command="clickItem">
+        <span class="el-dropdown-link">
+          {{user.username}}
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <template v-for="item in commandList">
+            <el-dropdown-item :key="item.name" :command="item.command" :icon="item.icon">{{item.name}}</el-dropdown-item>
+          </template>
         </el-dropdown-menu>
       </el-dropdown>
-      <i class="el-icon-caret-bottom drop-icon"></i>
     </div>
   </div>
 </template>
 
 <script>
-import logo from '@/assets/logo.png'
+import HeadTheme from './theme/index.vue'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'headIndex',
   data () {
     return {
-      logo
+      commandList: [
+        {
+          name: '注销',
+          command: 'logout',
+          icon: 'el-icon-switch-button',
+          path: {
+            name: 'login'
+          }
+        }
+      ]
     }
   },
   components: {
+    HeadTheme
   },
   computed: {
+    ...mapGetters(['user'])
   },
   watch: {
   },
@@ -43,9 +54,23 @@ export default {
   beforeDestroy () {
   },
   methods: {
+    ...mapMutations('user', [
+      'updateUser'
+    ]),
     // 下拉菜单点击事件
-    handleCommand (command) {
-      console.log('command: ', command)
+    clickItem (command) {
+      const item = this.commandList.find(item => item.command === command)
+      this.$router.push(item.path)
+      if (item.command === 'logout') {
+        // 进行注销操作
+        localStorage.removeItem('uuid')
+        // vuex 清空用户信息
+        this.updateUser({
+          username: '',
+          userId: '',
+          avatar: ''
+        })
+      }
     }
   }
 }
@@ -55,19 +80,12 @@ export default {
 .head-wrap{
   @include flex-between;
   height: $navHeight;
+  padding: 0 30px;
   background: linear-gradient(90deg,#6081a7,#545e67,#576280);
   .head-left{
     display: flex;
     align-items: center;
     height: 100%;
-  }
-  .left-img{
-    display: inline-block;
-    width: 26px;
-    height: 26px;
-    margin: 0 5px;
-    @include bg-icon;
-    background-image: url('~@/assets/logo.png');
   }
   .left-title{
     display: inline-block;
@@ -76,28 +94,12 @@ export default {
     color: #e2ecf6;
   }
   .head-right{
-    position: relative;
-    width: 145px;
-    height: 100%;
     @include flex-center;
-    border-left: 1px solid #656e89;
-    cursor: pointer;
-    &:hover{
-      background: #545f6a;
+    color: #fff;
+    .el-dropdown{
+      color: #fff;
+      cursor: pointer;
     }
-    // .el-dropdown{
-    //   @include flex-center;
-    //   flex-direction: column;
-    //   width: 100%;
-    //   height: 100%;
-    // }
-  }
-  .right-img{
-    display: inline-block;
-    width: 30px;
-    height: 40px;
-    @include bg-icon;
-    background-image: url('~@/assets/logo.png');
   }
   .right-username{
     height: 20px;
