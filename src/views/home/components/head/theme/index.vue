@@ -64,10 +64,10 @@ export default {
     // color: #ccc;
     padding: 6px;
     font-size: 20px;
-    &:hover{
-      // color: rgba(255, 255, 255, .9);
-      background: #545f6a;
-    }
+    // &:hover{
+    //   // color: rgba(255, 255, 255, .9);
+    //   // background: #545f6a;
+    // }
   }
 }
 </style>

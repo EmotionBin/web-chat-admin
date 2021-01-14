@@ -17,6 +17,7 @@
         color: $theme-head-setting-color;
         &:hover{
           color: $theme-head-setting-hover-color;
+          background: $theme-head-setting-hover-bgc-color;
         }
       }
       .el-dropdown{
@@ -28,17 +29,25 @@
   // 左侧菜单
   .body-menu{
     background: $theme-menu-bgc;
+    box-shadow: 0 0 3px $theme-menu-border-color;
     .el-menu{
       .menu-title,
       .el-menu-item{
         color: $theme-menu-title-color;
       }
+      .el-submenu__title {
+        i::before {
+          color: $theme-menu-title-arrow-color;
+        }
+      }
       .el-submenu__title:hover,
       .el-menu-item:hover{
-        background: $theme-menu-title-hover-color;
+        color: $theme-menu-title-hover-color;
+        background: $theme-menu-title-hover-bgc-color;
       }
       .el-menu-item.is-active{
-        background: $theme-menu-title-active-color;
+        color: $theme-menu-title-hover-color;
+        background: $theme-menu-title-active-bgc-color;
       }
     }
   }
@@ -48,6 +57,7 @@
     .content-head{
       background-color: $theme-tabs-bgc;
       color: $theme-tabs-color;
+      box-shadow: 0 0 4px $theme-tabs-border-color;
     }
   }
 

@@ -101,7 +101,7 @@ $viewHeadHeight:40px;
       padding-left: 20px;
       // background-color: #fff;
       // color: #606266;
-      @include common-box-shadow(#999);
+      // @include common-box-shadow(#999);
     }
     .content-view-wrap{
       height: calc(100% - #{$viewHeadHeight});
