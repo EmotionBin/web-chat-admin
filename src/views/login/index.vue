@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { login } from '@/api'
 import { mapMutations } from 'vuex'
 
 export default {
@@ -77,13 +78,9 @@ export default {
         if (valid) {
           const { username, password } = this.form
           try {
-            const { data } = await this.$request({
-              url: '/api/login',
-              method: 'post',
-              data: {
-                username,
-                password: this.$md5(password)
-              }
+            const { data } = await login({
+              username,
+              password: this.$md5(password)
             })
             this.loginSuccess(data)
           } catch (error) {

@@ -20,6 +20,10 @@
           background: $theme-head-setting-hover-bgc-color;
         }
       }
+      .location-text,
+      .weather-text{
+        color: $theme-head-setting-color;
+      }
       .el-dropdown{
         color: $theme-head-setting-color;
       }

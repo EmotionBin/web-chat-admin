@@ -5,6 +5,12 @@
     </div>
     <div class="head-right">
       <head-theme/>
+      <div class="info-location">
+        <span class="location-text">{{location}}</span>
+      </div>
+      <div class="info-weather">
+        <span class="weather-text">{{weather}}</span>
+      </div>
       <el-dropdown @command="clickItem">
         <span class="el-dropdown-link">
           {{user.username}}
@@ -21,12 +27,15 @@
 
 <script>
 import HeadTheme from './theme/index.vue'
+import { getWeather, getLocation } from '@/api'
 import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'headIndex',
   data () {
     return {
+      location: '',
+      weather: '',
       commandList: [
         {
           name: '注销',
@@ -50,6 +59,7 @@ export default {
   created () {
   },
   mounted () {
+    this.init()
   },
   beforeDestroy () {
   },
@@ -70,6 +80,17 @@ export default {
           userId: '',
           avatar: ''
         })
+      }
+    },
+    // 初始化 查询天气 位置等
+    async init () {
+      try {
+        const { data: { location, code } } = await getLocation()
+        this.location = location
+        const { data: { temperature, weather } } = await getWeather({ code })
+        this.weather = `${temperature}°C ${weather}`
+      } catch (error) {
+        console.log('获取天气、定位信息时发生了错误', error)
       }
     }
   }
@@ -95,7 +116,13 @@ export default {
   }
   .head-right{
     @include flex-center;
+    .location-text,
+    .weather-text{
+      margin: 0 10px;
+    }
     .el-dropdown{
+      padding-top: 2px;
+      margin-left: 10px;
       // color: #fff;
       cursor: pointer;
     }
