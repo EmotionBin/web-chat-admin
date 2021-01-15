@@ -29,6 +29,9 @@
                   <template v-else-if="item.prop === 'status'">
                     {{ scope.row[item.prop] === 1 ? '成功' : '失败' }}
                   </template>
+                  <template v-else-if="item.prop === 'action'">
+                    {{ formatMessage(scope.row[item.prop]) }}
+                  </template>
                   <template v-else>
                     {{ scope.row[item.prop] }}
                   </template>
@@ -151,6 +154,10 @@ export default {
     // 格式化时间
     formatTime (time) {
       return dayjs(+time).format('YYYY-MM-DD HH:mm:ss')
+    },
+    // 格式化消息
+    formatMessage (message) {
+      return window.decodeURI(message)
     }
   }
 }

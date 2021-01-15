@@ -58,6 +58,6 @@ export const useTimeRange = [
   },
   {
     value: 0,
-    name: '18:00-0:00'
+    name: '18:00-24:00'
   }
 ]

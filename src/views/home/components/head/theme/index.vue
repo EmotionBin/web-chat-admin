@@ -50,7 +50,7 @@ export default {
     ]),
     // 初始化 设置主题
     init () {
-      const activeName = this.theme.activeName || ''
+      const activeName = this.theme.activeName || 'classic'
       this.updateActiveTheme({ activeName })
     }
   }

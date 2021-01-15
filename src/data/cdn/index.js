@@ -35,6 +35,12 @@ module.exports = [
     js: 'https://huangweibin-libs.oss-cn-shanghai.aliyuncs.com/web-chat/element-ui@2.14.1.min.js',
     css: 'https://huangweibin-libs.oss-cn-shanghai.aliyuncs.com/web-chat/element-ui@2.14.1.min.css'
   },
+  {
+    name: 'echarts',
+    library: 'echarts',
+    js: 'https://huangweibin-libs.oss-cn-shanghai.aliyuncs.com/web-chat/echarts@4.9.0.min.js',
+    css: ''
+  },
   // {
   //   name: 'md5',
   //   library: 'MD5',
