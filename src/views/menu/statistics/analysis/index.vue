@@ -1,5 +1,5 @@
 <template>
-  <div class="analysis-wrap">
+  <div class="analysis-wrap" v-loading="isLoading" element-loading-text="数据加载中...">
     <!-- 1.登录方式 微信登录与普通登录 饼图
     2.用户使用时间段 饼图 0:00-8:00 8:00-12:00 12:00-18:00 18:00-0:00
     数据分析 -->
@@ -21,7 +21,8 @@
 </template>
 
 <script>
-import { pickerOptions } from '@/data/views/analysis.js'
+import { pickerOptions, loginTypeData, useTimeRange } from '@/data/views/analysis'
+import { getStatisticsAnalysis } from '@/api/data'
 import echarts from 'echarts'
 
 export default {
@@ -30,7 +31,10 @@ export default {
     return {
       chart: [],
       date: [],
-      pickerOptions
+      pickerOptions,
+      loginTypeData,
+      useTimeRange,
+      isLoading: false
     }
   },
   components: {
@@ -50,23 +54,7 @@ export default {
     // 初始化
     init () {
       this.date = this.$utils.getTimeRange(-30)
-      // 请求数据...
-      const data = [
-        {
-          value: 335,
-          name: '微信登录'
-        },
-        {
-          value: 264,
-          name: '普通登录'
-        }
-      ].sort((a, b) => a.value - b.value)
-      const option = this.getChartOption({ domRef: 'chartLoginWay', data })
-      this.setchart({ domRef: 'chartLoginWay', option })
-      const option1 = this.getChartOption({ domRef: 'chartTimeRange', data })
-      this.setchart({ domRef: 'chartTimeRange', option: option1 })
-      // 窗口大小改变的时候重绘图表
-      window.addEventListener('resize', this.chartRepaint)
+      this.getData()
     },
     // 绘制图表
     setchart ({ domRef, option }) {
@@ -101,14 +89,6 @@ export default {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
-        visualMap: {
-          show: false,
-          min: 80,
-          max: 600,
-          inRange: {
-            colorLightness: [0, 1]
-          }
-        },
         series: [
           {
             name: '登录方式',
@@ -116,14 +96,10 @@ export default {
             radius: '55%',
             center: ['50%', '50%'],
             data,
-            roseType: 'radius',
             labelLine: {
               smooth: 0.2,
               length: 10,
               length2: 20
-            },
-            itemStyle: {
-              color: '#c23531'
             },
             animationType: 'scale',
             animationEasing: 'elasticOut',
@@ -169,8 +145,34 @@ export default {
       return wrap[`${domRef}Option`]
     },
     // 查询数据
-    getData () {
-      console.log('查询', this.date)
+    async getData () {
+      try {
+        this.isLoading = true
+        const [startTime, endTime] = this.date
+        const { data } = await getStatisticsAnalysis({
+          startTime,
+          endTime: endTime + 1 * 24 * 60 * 60 * 1000
+        })
+        const { loginTime, wxLoginTime, timeRange } = data
+        this.loginTypeData[0].value = wxLoginTime
+        this.loginTypeData[1].value = loginTime
+        const loginTypeDataSort = this.loginTypeData
+          .sort((a, b) => a.value - b.value)
+          .filter(item => item.value) // 过滤掉值为 0 的项目
+        const chartLoginWayOption = this.getChartOption({ domRef: 'chartLoginWay', data: loginTypeDataSort })
+        this.setchart({ domRef: 'chartLoginWay', option: chartLoginWayOption })
+        Object.keys(timeRange).forEach((key, index) => {
+          this.useTimeRange[index].value = timeRange[key]
+        })
+        const timeData = this.useTimeRange.filter(item => item.value) // 过滤掉值为 0 的项目
+        const chartTimeRangeOption = this.getChartOption({ domRef: 'chartTimeRange', data: timeData })
+        this.setchart({ domRef: 'chartTimeRange', option: chartTimeRangeOption })
+        this.isLoading = false
+        // 窗口大小改变的时候重绘图表
+        window.addEventListener('resize', this.chartRepaint)
+      } catch (error) {
+        console.log('获取数据分析数据时发生了错误', error)
+      }
     }
   }
 }

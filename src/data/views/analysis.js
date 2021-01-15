@@ -5,6 +5,7 @@ const f = day => {
   return [start, end]
 }
 
+// 日期选择器限制
 export const pickerOptions = {
   shortcuts: [
     {
@@ -28,3 +29,35 @@ export const pickerOptions = {
   ],
   disabledDate: time => time.getTime() > Date.now()
 }
+
+// 登录方式数据
+export const loginTypeData = [
+  {
+    value: 0,
+    name: '微信登录'
+  },
+  {
+    value: 0,
+    name: '普通登录'
+  }
+]
+
+// 用户使用时段数据
+export const useTimeRange = [
+  {
+    value: 0,
+    name: '0:00-8:00'
+  },
+  {
+    value: 0,
+    name: '8:00-12:00'
+  },
+  {
+    value: 0,
+    name: '12:00-18:00'
+  },
+  {
+    value: 0,
+    name: '18:00-0:00'
+  }
+]

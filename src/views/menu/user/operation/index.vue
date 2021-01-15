@@ -1,8 +1,8 @@
 <template>
-  <div class="operation-wrap">
+  <div class="operation-wrap" v-loading="isLoading" element-loading-text="数据加载中...">
     <div class="operation-head">
       <span class="select-text">用户：</span>
-      <el-select v-model="user" placeholder="请选择用户">
+      <el-select v-model="user" placeholder="请选择用户" clearable filterable>
         <el-option v-for="item in userList" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
       </el-select>
@@ -10,7 +10,7 @@
       <el-date-picker v-model="date" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期"
         end-placeholder="结束日期" :picker-options="pickerOptions" format="yyyy-MM-dd" value-format="timestamp">
       </el-date-picker>
-      <el-button type="primary" @click="getData">查询</el-button>
+      <el-button type="primary" @click="searchData">查询</el-button>
     </div>
     <div class="operation-body">
       <el-table
@@ -24,7 +24,10 @@
               <div class="table-info">
                 <span class="info-text">
                   <template v-if="item.prop === 'time'">
-                    {{ scope.row[item.prop] }}
+                    {{ formatTime(scope.row[item.prop]) }}
+                  </template>
+                  <template v-else-if="item.prop === 'status'">
+                    {{ scope.row[item.prop] === 1 ? '成功' : '失败' }}
                   </template>
                   <template v-else>
                     {{ scope.row[item.prop] }}
@@ -49,57 +52,35 @@
 </template>
 
 <script>
-import { pickerOptions } from '@/data/views/analysis.js'
-import { tableCofig } from '@/data/views/operation.js'
+import dayjs from 'dayjs'
+import { pickerOptions } from '@/data/views/analysis'
+import { getUserOperation } from '@/api/data'
+import { getLogUserList } from '@/api/user'
+import { tableCofig } from '@/data/views/operation'
 
 export default {
   name: 'userOperation',
   data () {
     return {
       user: '',
-      userList: [
-        {
-          label: '小红',
-          value: 1
-        },
-        {
-          label: '小明',
-          value: 2
-        },
-        {
-          label: '小张',
-          value: 3
-        }
-      ],
+      userList: [],
       date: [],
       pickerOptions,
       tableCofig,
-      tableData: [
-        {
-          username: 1,
-          time: 1645135200,
-          operation: 121,
-          status: 1111
-        },
-        {
-          username: 2,
-          time: 1645135200,
-          operation: 121,
-          status: 1111
-        }
-      ],
+      tableData: [],
       page: {
         size: 10,
         number: 1,
         total: 100
-      }
+      },
+      isLoading: false
     }
   },
   components: {
   },
   computed: {
     getMaxPageNumber () {
-      return Math.round(this.page.total / this.page.size)
+      return Math.ceil(this.page.total / this.page.size)
     }
   },
   watch: {
@@ -117,22 +98,59 @@ export default {
       // 设置默认时间
       this.date = this.$utils.getTimeRange(-30)
       this.getUserList()
+      this.getData()
     },
     // 查询用户列表
-    getUserList () {
-      console.log(1)
+    async getUserList () {
+      try {
+        const { data } = await getLogUserList()
+        this.userList = data.map(({ username, userId }) => {
+          return {
+            label: username,
+            value: userId
+          }
+        })
+      } catch (error) {
+        console.log('获取用户列表时发生了错误', error)
+      }
+    },
+    // 获取数据
+    async getData (number = 1) {
+      try {
+        const [startTime, endTime] = this.date
+        this.isLoading = true
+        const { data } = await getUserOperation({
+          userId: this.user,
+          startTime,
+          endTime: endTime + 1 * 24 * 60 * 60 * 1000,
+          size: this.page.size,
+          number
+        })
+        const { logPageList, sum } = data
+        this.tableData = logPageList
+        this.page.total = sum
+        this.isLoading = false
+      } catch (error) {
+        console.log('获取用户列表时发生了错误', error)
+      }
     },
     // 查询数据
-    getData () {
-      console.log('查询', this.date)
+    searchData () {
+      this.page.number = 1
+      this.getData()
     },
     // 自定义表格索引
     indexMethod (index) {
-      return index + 1
+      return (this.page.number - 1) * this.page.size + index + 1
     },
     // 翻页
     pageChange (page) {
-      console.log(page)
+      this.page.number = page
+      this.getData(this.page.number)
+    },
+    // 格式化时间
+    formatTime (time) {
+      return dayjs(+time).format('YYYY-MM-DD HH:mm:ss')
     }
   }
 }

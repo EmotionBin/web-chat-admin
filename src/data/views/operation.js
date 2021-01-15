@@ -9,7 +9,7 @@ export const tableCofig = [
   },
   {
     label: '操作',
-    prop: 'operation'
+    prop: 'action'
   },
   {
     label: '状态',

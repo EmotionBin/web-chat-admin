@@ -1,5 +1,5 @@
 <template>
-  <div class="overview-wrap">
+  <div class="overview-wrap" v-loading="isLoading" element-loading-text="数据加载中...">
     <!-- 数据概览
     1.最近三十天访问人数
     2.总活跃度(用户每进行一次操作活跃度 + 1)
@@ -11,7 +11,17 @@
       <template v-for="item in headAccountData">
         <div class="head-area-wrap" :key="item.title">
           <div class="head-area-content">
-            <div class="area-title">{{ item.title }}</div>
+            <div class="area-title">
+              {{ item.title }}
+              <span class="title-tips" v-if="item.tips">
+                <el-popover
+                  placement="top"
+                  trigger="hover"
+                  :content="item.tips">
+                  <i slot="reference" class="el-icon-question"></i>
+                </el-popover>
+              </span>
+            </div>
             <div :class="['area-value', item.name]">{{ item.value }}</div>
           </div>
         </div>
@@ -29,39 +39,20 @@
 </template>
 
 <script>
+import { headAccountData, chartPeopleNumberData, chartActivityLevelData } from '@/data/views/overview'
+import { getStatisticsOverview } from '@/api/data'
+import dayjs from 'dayjs'
 import echarts from 'echarts'
 
 export default {
   name: 'statisticsOverview',
   data () {
     return {
-      headAccountData: [
-        {
-          title: '最近三十天访问人数',
-          name: 'lastThirty',
-          tips: '',
-          value: 30
-        },
-        {
-          title: '昨日访问人数',
-          name: 'yesterday',
-          tips: '',
-          value: 30
-        },
-        {
-          title: '总活跃度',
-          tips: '用户每进行一次操作活跃度加一',
-          name: 'sumActivity',
-          value: 30
-        },
-        {
-          title: '昨日活跃度',
-          tips: '用户每进行一次操作活跃度加一',
-          name: 'yesterdayActivity',
-          value: 30
-        }
-      ],
-      chart: []
+      headAccountData,
+      chartPeopleNumberData,
+      chartActivityLevelData,
+      chart: [],
+      isLoading: false
     }
   },
   components: {
@@ -81,22 +72,32 @@ export default {
   },
   methods: {
     // 初始化
-    init () {
-      // 请求数据...
-      const data = {
-        xData: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-        value: [120, 132, 101, 134, 90, 230, 210]
+    async init () {
+      try {
+        this.isLoading = true
+        const { data } = await getStatisticsOverview()
+        const { lastThirty, sumActivity, yesterday, yesterdayActivity, weekData } = data
+        headAccountData[0].value = lastThirty
+        headAccountData[1].value = yesterday
+        headAccountData[2].value = sumActivity
+        headAccountData[3].value = yesterdayActivity
+        weekData.forEach(({ activity, date, people }) => {
+          const thatDay = dayjs(date).format('YYYY-MM-DD')
+          this.chartPeopleNumberData.xData.push(thatDay)
+          this.chartActivityLevelData.xData.push(thatDay)
+          this.chartPeopleNumberData.value.push(people)
+          this.chartActivityLevelData.value.push(activity)
+        })
+        const chartPeopleNumberOption = this.getChartOption({ domRef: 'chartPeopleNumber', data: this.chartPeopleNumberData })
+        this.setchart({ domRef: 'chartPeopleNumber', option: chartPeopleNumberOption })
+        const chartActivityLevelOption = this.getChartOption({ domRef: 'chartActivityLevel', data: this.chartActivityLevelData })
+        this.setchart({ domRef: 'chartActivityLevel', option: chartActivityLevelOption })
+        this.isLoading = false
+        // 窗口大小改变的时候重绘图表
+        window.addEventListener('resize', this.chartRepaint)
+      } catch (error) {
+        console.log('获取数据概览数据时发生了错误', error)
       }
-      const option = this.getChartOption({ domRef: 'chartPeopleNumber', data })
-      this.setchart({ domRef: 'chartPeopleNumber', option })
-      const data1 = {
-        xData: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-        value: [10, 52, 200, 334, 390, 330, 220]
-      }
-      const option1 = this.getChartOption({ domRef: 'chartActivityLevel', data: data1 })
-      this.setchart({ domRef: 'chartActivityLevel', option: option1 })
-      // 窗口大小改变的时候重绘图表
-      window.addEventListener('resize', this.chartRepaint)
     },
     // 绘制图表
     setchart ({ domRef, option }) {
@@ -155,7 +156,9 @@ export default {
         ],
         yAxis: [
           {
-            type: 'value'
+            type: 'value',
+            interval: 1,
+            max: Math.max(...data.value) + 1
           }
         ],
         series: [
@@ -206,7 +209,9 @@ export default {
         ],
         yAxis: [
           {
-            type: 'value'
+            type: 'value',
+            interval: 1,
+            max: Math.max(...data.value) + 1
           }
         ],
         series: [
@@ -250,6 +255,10 @@ export default {
       box-shadow: 0 0 4px #d1d1d1;
       .area-title{
         margin-bottom: 20px;
+        .title-tips{
+          outline: none;
+          cursor: pointer;
+        }
       }
       .area-value{
         &.lastThirty{
