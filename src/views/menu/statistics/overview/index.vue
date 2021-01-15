@@ -75,6 +75,7 @@ export default {
     async init () {
       try {
         this.isLoading = true
+        this.resetData()
         const { data } = await getStatisticsOverview()
         const { lastThirty, sumActivity, yesterday, yesterdayActivity, weekData } = data
         headAccountData[0].value = lastThirty
@@ -98,6 +99,18 @@ export default {
       } catch (error) {
         console.log('获取数据概览数据时发生了错误', error)
       }
+    },
+    // 清空数据
+    resetData () {
+      this.headAccountData.forEach(item => {
+        item.value = 0
+      })
+      Object.keys(this.chartPeopleNumberData).forEach(key => {
+        this.chartPeopleNumberData[key] = []
+      })
+      Object.keys(this.chartActivityLevelData).forEach(key => {
+        this.chartActivityLevelData[key] = []
+      })
     },
     // 绘制图表
     setchart ({ domRef, option }) {

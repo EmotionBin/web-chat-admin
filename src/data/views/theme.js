@@ -2,22 +2,24 @@
  * 定义主题列表
  */
 
-import logo from '@/assets/logo.png'
+import classic from '@/assets/theme/classic.png'
+import tint from '@/assets/theme/tint.png'
+import deep from '@/assets/theme/deep.png'
 
 export const themeList = [
   {
     title: '经典',
-    name: 'default',
-    preview: logo
+    name: 'classic',
+    preview: classic
   },
   {
-    title: '经典1',
-    name: 'default1',
-    preview: logo
+    title: '浅色',
+    name: 'tint',
+    preview: tint
   },
   {
-    title: '经典2',
-    name: 'default2',
-    preview: logo
+    title: '深色',
+    name: 'deep',
+    preview: deep
   }
 ]
