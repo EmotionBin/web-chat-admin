@@ -1,8 +1,11 @@
+import dataAccount from '@/assets/menu/data-account.png'
+import userAction from '@/assets/menu/user-operation.png'
+
 export default [
   {
     title: '数据统计',
     alias: 'dataAccount',
-    icon: '',
+    icon: dataAccount,
     show: true,
     subMenu: [
       {
@@ -24,7 +27,7 @@ export default [
   {
     title: '用户行为',
     alias: 'userAction',
-    icon: '',
+    icon: userAction,
     show: true,
     subMenu: [
       {
@@ -32,6 +35,13 @@ export default [
         alias: 'userOperation',
         icon: '',
         path: '/user/operation',
+        show: true
+      },
+      {
+        title: '用户数据',
+        alias: 'userData',
+        icon: '',
+        path: '/user/data',
         show: true
       }
     ]

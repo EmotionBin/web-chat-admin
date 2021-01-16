@@ -134,7 +134,7 @@ export default {
         this.page.total = sum
         this.isLoading = false
       } catch (error) {
-        console.log('获取用户列表时发生了错误', error)
+        console.log('获取用户操作数据时发生了错误', error)
       }
     },
     // 查询数据

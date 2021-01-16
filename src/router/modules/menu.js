@@ -22,5 +22,11 @@ export default [
     name: 'userOperation',
     meta,
     component: () => import('@/views/menu/user/operation/index.vue')
+  },
+  {
+    path: 'user/data',
+    name: 'userData',
+    meta,
+    component: () => import('@/views/menu/user/data/index.vue')
   }
 ]
