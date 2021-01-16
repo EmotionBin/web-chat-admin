@@ -66,10 +66,10 @@ export default {
   },
   methods: {
     // 初始化
-    init () {
+    async init () {
       // 设置默认时间
       this.date = this.$utils.getTimeRange(-30)
-      this.getUserList()
+      await this.getUserList()
       // 默认选择当前用户
       this.userId = this.user.userId
       this.getData()

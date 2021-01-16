@@ -50,7 +50,7 @@ export default {
     ]),
     // 初始化 设置主题
     init () {
-      const activeName = this.theme.activeName || 'classic'
+      const activeName = window.localStorage.getItem('web-chat-admin-theme') || 'classic'
       this.updateActiveTheme({ activeName })
     }
   }
