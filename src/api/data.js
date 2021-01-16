@@ -30,3 +30,12 @@ export const getUserOperation = params => {
     params
   })
 }
+
+// 获取用户数据
+export const getUserData = params => {
+  return request({
+    method: 'get',
+    url: '/api/log/getUserData',
+    params
+  })
+}

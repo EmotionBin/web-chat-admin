@@ -2,7 +2,7 @@
   <div class="data-wrap" v-loading="isLoading" element-loading-text="数据加载中...">
     <div class="data-head">
       <span class="select-text">用户：</span>
-      <el-select v-model="user" placeholder="请选择用户" clearable filterable>
+      <el-select v-model="userId" placeholder="请选择用户" filterable>
         <el-option v-for="item in userList" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
       </el-select>
@@ -30,20 +30,20 @@
 <script>
 import echarts from 'echarts'
 import { pickerOptions, useTimeRange } from '@/data/views/analysis'
-import { getStatisticsAnalysis } from '@/api/data'
+import { getUserData } from '@/api/data'
 import { getLogUserList } from '@/api/user'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'userData',
   data () {
     return {
-      user: '',
+      userId: '',
       userList: [],
       date: [],
       pickerOptions,
       useTimeRange,
       loginTime: 0,
-      stayTime: 0,
       chart: [],
       isLoading: false
     }
@@ -51,6 +51,7 @@ export default {
   components: {
   },
   computed: {
+    ...mapGetters(['user'])
   },
   watch: {
   },
@@ -69,6 +70,8 @@ export default {
       // 设置默认时间
       this.date = this.$utils.getTimeRange(-30)
       this.getUserList()
+      // 默认选择当前用户
+      this.userId = this.user.userId
       this.getData()
     },
     // 查询用户列表
@@ -90,11 +93,13 @@ export default {
       try {
         const [startTime, endTime] = this.date
         this.isLoading = true
-        const { data } = await getStatisticsAnalysis({
+        const { data } = await getUserData({
+          userId: this.userId,
           startTime,
           endTime: endTime + 1 * 24 * 60 * 60 * 1000
         })
-        const { timeRange } = data
+        const { timeRange, sum } = data
+        this.loginTime = sum
         Object.keys(timeRange).forEach((key, index) => {
           this.useTimeRange[index].value = timeRange[key]
         })
