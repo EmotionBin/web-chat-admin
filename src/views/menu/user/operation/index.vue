@@ -183,12 +183,11 @@ export default {
   .operation-body{
     height: calc(100% - 200px);
     padding: 20px;
-    // .el-table{
-    //   .el-table__header .cell{
-    //     text-overflow: unset !important;
-    //     white-space: nowrap !important;
-    //   }
-    // }
+    .table-info{
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
   .operation-footer{
     position: relative;
