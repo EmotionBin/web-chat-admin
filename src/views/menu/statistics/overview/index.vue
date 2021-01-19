@@ -149,11 +149,6 @@ export default {
             }
           }
         },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
         grid: {
           left: '3%',
           right: '4%',
@@ -198,11 +193,6 @@ export default {
           trigger: 'axis',
           axisPointer: {
             type: 'shadow'
-          }
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
           }
         },
         grid: {
