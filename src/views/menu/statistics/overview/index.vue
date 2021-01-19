@@ -170,7 +170,7 @@ export default {
         yAxis: [
           {
             type: 'value',
-            interval: Math.min(...data.value) || 1,
+            // interval: Math.min(...data.value) || 1,
             max: Math.max(...data.value) + 1
           }
         ],
@@ -223,7 +223,7 @@ export default {
         yAxis: [
           {
             type: 'value',
-            interval: Math.min(...data.value) || 1,
+            // interval: Math.min(...data.value) || 1,
             max: Math.max(...data.value) + 1
           }
         ],
