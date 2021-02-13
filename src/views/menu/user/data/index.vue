@@ -91,6 +91,10 @@ export default {
     // 获取数据
     async getData () {
       try {
+        if (!this.date) {
+          this.$message.warning('请选择时间!')
+          return
+        }
         const [startTime, endTime] = this.date
         this.isLoading = true
         const { data } = await getUserData({

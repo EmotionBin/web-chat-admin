@@ -147,6 +147,10 @@ export default {
     // 查询数据
     async getData () {
       try {
+        if (!this.date) {
+          this.$message.warning('请选择时间!')
+          return
+        }
         this.isLoading = true
         const [startTime, endTime] = this.date
         const { data } = await getStatisticsAnalysis({
