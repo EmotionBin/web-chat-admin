@@ -20,7 +20,7 @@
     <!-- built files will be auto injected -->
     <!-- 使用 CDN 加速的 JS 文件，配置在 vue.config.js 下 -->
     <% for (var i in htmlWebpackPlugin.options.cdn&&htmlWebpackPlugin.options.cdn.js) { %>
-      <script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
-      <% } %>
+    <script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
+    <% } %>
   </body>
 </html>
